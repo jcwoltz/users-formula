@@ -3,6 +3,13 @@ users-formula:
   lookup:  # override the defauls in map.jinja
     root_group: root
 
+# group initialization
+groups:
+  foo:
+    state: present
+    gid: 500
+    system: False
+
 users:
   ## Minimal required pillar values
   auser:
@@ -48,6 +55,8 @@ users:
       - ALL=(otheruser) /usr/bin/script.sh
     sudo_defaults:
       - '!requiretty'
+    # enable polkitadmin to make user an AdminIdentity for polkit
+    polkitadmin: True
     shell: /bin/bash
     remove_groups: False
     prime_group:
@@ -169,3 +178,17 @@ users:
 absent_users:
   - donald
   - bad_guy
+
+groups:
+  badguys:
+    absent: True
+  niceguys:
+    gid: 4242
+    system: False
+    addusers: root
+    delusers: toor
+  ssl-cert:
+    system: True
+    members:
+    - www-data
+    - openldap
